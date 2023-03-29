@@ -36,7 +36,7 @@
 | [app](./src/frontend/app)                           | 构建应用的各个组件。[app.context_impl.ContextImpl](./src/frontend/app/context_impl.go)是对[interfaces.Context](./src/frontend/interfaces/context.go)的实现。 |
 | [genproto](./src/frontend/genproto)                 | 存放用protoc文件生成的各个文件。proto文件放在[pb](./pb)目录下。 |
 | [common](./src/frontend/common)                     | 存放各个应用组件可能公用的代码。 |
-| [service](./src/frontend/common)                    | 应用依赖的各个服务。对frontend来说，就是需要作为客户端使用的各个gRPC服务。|
+| [service](./src/frontend/service)                    | 应用依赖的各个服务。对frontend来说，就是需要作为客户端使用的各个gRPC服务。|
 | [static](./src/frontend/static)                     | web服务用到的各个静态资源，js、css、html等。 |
 | [templates](./src/frontend/templates)               | 用来生成页面的templates。 |
 | [web](./src/frontend/web)                           | web服务的实现。 |
