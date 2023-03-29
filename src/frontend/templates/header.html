@@ -1,0 +1,59 @@
+{{- define "header" }}
+      {{ "<!-- 导航栏 -->" | safe }}
+      <nav class="navbar navbar-expand-md border-bottom" style="max-width: 1400px;">
+        <div class="container-fluid">
+          <a class="navbar-brand me-5" href="/">
+            <img src="/static/img/icons8-blogger.svg" width="40px" height="40px"/>
+          </a>
+          <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="navbarCollapse">
+            {{ "<!-- 各个栏目 -->" | safe }}
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item me-4">
+                <a class="nav-link active" aria-current="page" href="/">首页</a>
+              </li>
+              <li class="nav-item me-4">
+                <a class="nav-link" href="/hot">热门</a>
+              </li>
+              <li class="nav-item me-4">
+                <a class="nav-link" href="/event">活动</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/live">直播</a>
+              </li>
+            </ul>
+            {{ "<!-- 查询 -->" | safe }}
+            <form class="d-flex me-5 align-items-center" role="search" action="/search" method="GET">
+              <input class="form-control rounded-pill search-input" type="search" placeholder="" aria-label="Search" name='content' required>
+              <button class="btn" type="submit"><img class="search-icon" src="/static/img/icons8-search.svg"/></button>
+            </form>
+            {{ "<!-- 登录/注册 或 个人信息 -->" | safe }}
+            <div class="user-actions d-flex align-items-center">
+              {{ if not .user_info.IsLoggedIn }}
+              <button class="btn btn-outline-success btn-sm rounded-pill" onclick="window.location.href='/account/signin';">登录/注册</button>
+              {{ else }}
+              <div class="dropdown">
+                <a class="nav-link dropdown-toggle nickname" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">              
+                  <img class="avatar" src="{{ if .user_info.Avatar }} {{ .user_info.Avatar }} {{ else }} /static/img/default_avatar.jpg {{ end }}"></img>
+                  {{ .user_info.NickName }}
+                </a>
+                <ul class="dropdown-menu my-actions">
+                  <li><a class="dropdown-item my-actions-item" href="/my/article">我的文章</a></li>
+                  <li><a class="dropdown-item my-actions-item" href="/article/post">发布文章</a></li>
+                  <li><a class="dropdown-item my-actions-item" href="/my/profile">个人资料</a></li>
+                  <li><hr class="dropdown-divider my-actions-item" /></li>
+                  <li>
+                    <form action="/account/signout" method="post">
+                      <button class="dropdown-item my-actions-item">退出登录</button>
+                    </form>
+                  </li>
+                </ul>
+              </div>
+              {{ end }}
+            </div>
+          </div>
+        </div>
+      </nav>
+{{- end }}

@@ -1,0 +1,92 @@
+@use 'base'
+
+$layout-breakpoint-small: 1000px
+
+@media (min-width: $layout-breakpoint-small)
+  .main
+    display: flex
+    flex-direction: row
+    padding: 16px
+    .article
+      background-color: white
+      flex-grow: 1
+      margin-right: 8px
+      border-radius: 6px
+      padding: 16px
+      overflow-x: auto
+    .sidebar
+      height: 200px
+      background-color: white
+      width: 320px
+      min-width: 360px
+      margin-left: 8px
+      border-radius: 6px
+      display: flex
+      justify-content: center
+      align-items: center
+      position: sticky
+      top: 0
+      p
+        font-size: 26px
+        color: #c3601a
+        font-family: cursive
+
+@media (max-width: $layout-breakpoint-small)
+  .main
+    display: flex
+    flex-direction: column
+    padding: 16px
+  .article
+    background-color: white
+    border-radius: 6px
+    padding: 16px
+    overflow-x: auto
+  .sidebar
+    height: 200px
+    background-color: white
+    border-radius: 6px
+    margin-top: 16px
+    display: flex
+    justify-content: center
+    align-items: center
+    p
+      font-size: 26px
+      color: #c3601a
+      font-family: cursive
+
+.article-title-info
+  display: flex
+  align-items: center
+  justify-content: center
+
+.article-title
+  font-size: 26px
+
+.actions
+  display: flex
+  justify-content: right
+  margin-bottom: 12px
+
+.edit
+  margin-left: auto
+  height: 28px
+  font-size: 12px
+
+.article-author-info
+  display: flex
+  justify-content: flex-end
+
+.article-author
+  color: #576B95
+
+.article-publish-time
+  color: rgba(0, 0, 0, 0.3)
+  margin-left: 10px
+
+.article-content
+  margin-top: 20px
+  p
+    color: #222
+    font-size: 16px
+    text-indent: 32px
+    line-height: 1.8

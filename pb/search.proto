@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "./genproto/search;search";
+
+package search;
+
+service SearchService {
+    // 简单搜索。
+    rpc SimpleSearch(SimpleSearchRequest) returns (SimpleSearchResponse) {}
+}
+
+message SimpleSearchRequest {
+    string content = 1;
+}
+
+message SimpleSearchResponse {
+    repeated UserArticle articles = 1;
+}
+
+message UserArticle {
+    int64 id = 1;
+    int64 userId = 2;
+    string title = 3;
+    string tags = 4;
+    string summary = 5;
+    string userName = 6;
+    google.protobuf.Timestamp publishTs = 7;
+}

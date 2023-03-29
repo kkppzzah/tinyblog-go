@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package hello;
+
+option go_package = "./hello;hello";
+
+// -----------------Search service-----------------
+
+service SearchService {
+    rpc Search(SearchRequest) returns (SearchResponse) {}
+    rpc Index(Article) returns (Empty) {}
+}
+
+message Article {
+    int32 id = 1;
+    int32 user_id = 2;
+    string content = 3;
+}
+
+message SearchRequest {
+    string content = 1;
+    uint32 page = 2;
+    uint32 page_size = 3;
+}
+
+message SearchResponse {
+    repeated Article articles = 1;
+}
+
+message Empty {}

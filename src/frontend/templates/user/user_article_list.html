@@ -1,0 +1,40 @@
+{{- define "user_article_list" }}
+<!DOCTYPE html>
+<html>
+  <head>
+    {{- template "head" . }}
+    <link href="/static/css/home.css" rel="stylesheet" />
+  </head>
+  <body>
+    {{ "<!-- header -->" | safe }}
+    <header class="header container">
+      {{- template "header" . -}}
+    </header>
+      {{ "<!-- main -->" | safe }}
+      <main class="main">
+        <div class="recommend">
+          <list class="articles">
+            {{- range $article := .recommend_articles}}
+            <div class="article-item">
+              <div class="article-title">{{ $article.Title }}</div>
+              <div class="article-info">
+                <span class="article-author-title">作者</span>
+                <span class="article-author">{{ $article.UserName }}</span>
+                <span class="article-publish-time">{{ formatTs $article.PublishTime "2006-01-02 15:04" }}</span>
+              </div>
+              <div class="article-summary">{{ $article.Summary }}</div>
+            </div>
+            {{- end }}
+          </list>
+        </div>
+        <div class="sidebar sticky-top">
+          <p>Have a nice day!</p>
+        </div>
+      </main>
+      {{ "<!-- footer -->" | safe }}
+      <footer class="footer">
+        {{- template "footer" . -}}
+      </footer>
+  </body>
+</html>
+{{- end }}

@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+option go_package = "./genproto/storage;storage";
+
+package storage;
+
+service StorageService {
+    // 上传文件（不适合大文件）。
+    rpc Upload(UploadFileRequest) returns (UploadFileResponse) {}
+    // 上传文件（适合大文件）
+    rpc UploadBigFile(stream UploadFileRequest) returns (UploadFileResponse) {}
+}
+
+message UploadFileRequest {
+    repeated UploadFile uploadFiles = 1;
+}
+
+message UploadFileResponse {
+    repeated UploadedFile uploadedFiles = 1;
+}
+
+message UploadMeta {
+    int32 seq = 1;
+    string type = 2;
+    string rawFileName = 3;
+}
+
+message UploadFile {
+    UploadMeta meta = 1;
+    bytes data = 2;
+}
+
+message UploadedFile {
+    int32 seq = 1;
+    string url = 2;
+}

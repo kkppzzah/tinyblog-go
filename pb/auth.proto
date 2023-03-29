@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+option go_package = "./genproto/auth;auth";
+
+package auth;
+
+service AuthService {
+    // 创建用户。
+    rpc SignUp(SignUpRequest) returns (SignUpResponse) {}
+    // 登录。
+    rpc SignIn(SignInRequest) returns (SignInResponse) {}
+    // 退出登录。
+    rpc SignOut(SignOutRequest) returns (Empty) {}
+    // 获取认证用户信息。
+    rpc GetAuthUserInfo(GetAuthUserInfoRequest) returns (GetAuthUserInfoResponse) {}
+}
+
+enum AuthMethod {
+    AUTH_METHOD_SESSION = 0;
+    AUTH_METHOD_JWT = 1;
+}
+
+message SessionInfo {
+    string session = 1;
+}
+
+message JwtInfo {
+    string jwt = 1;
+}
+
+message AuthInfo {
+    SessionInfo session = 1;
+    JwtInfo jwt = 2;
+}
+
+message SignUpRequest {
+    string name = 1;
+    string password = 2;
+    AuthMethod authMethod = 3;
+}
+
+message SignUpResponse {
+    int64 id = 1;
+    AuthInfo authInfo  = 2;
+}
+
+message SignInRequest {
+    string name = 1;
+    string password = 2;
+    AuthMethod authMethod = 3;
+}
+
+message SignInResponse {
+    AuthInfo authInfo  = 1;
+}
+
+message SignOutRequest {
+    AuthInfo authInfo = 1;
+}
+
+message GetAuthUserInfoRequest {
+    AuthInfo authInfo = 1;
+}
+
+message GetAuthUserInfoResponse {
+    int64 id = 1;
+    string name = 2;
+    string nickname = 3;
+    string avatar = 4;
+    string bio = 5;
+}
+
+message Empty {}

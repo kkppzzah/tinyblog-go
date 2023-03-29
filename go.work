@@ -1,0 +1,12 @@
+go 1.20
+
+use (
+	./src/article
+	./src/frontend
+	./src/learn/fiber
+	./src/learn/grpc
+	./src/recommend
+	./src/search
+	./src/storage
+	./src/user
+)

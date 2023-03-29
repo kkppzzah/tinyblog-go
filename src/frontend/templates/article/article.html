@@ -1,0 +1,45 @@
+{{ define "article" }}
+<!DOCTYPE html>
+<html>
+  <head>
+    {{- template "head" . }}
+    <link href="/static/css/article.css" rel="stylesheet" />
+    <script src="/static/lib/jquery.min.js"></script>
+    <script src="/static/lib/prism/prism-okidia.js"></script>
+    <link href="/static/lib/prism/prism-okidia.css" rel="stylesheet" />
+  </head>
+  <body>
+    {{ "<!-- header -->" | safe }}
+    <div class="header-container">
+      <header class="header container">
+        {{- template "header" . -}}
+      </header>
+    </div>
+      {{ "<!-- main -->" | safe }}
+      <main class="main">
+        <div class="article">
+          <div class="article-title-info">
+            <div class="article-title">{{ .article_title }}</div>
+          </div>
+          <div class="actions">
+            <button class="edit btn btn-outline-success rounded-pill" {{ if not .is_article_owner }} hidden }} {{ else }} onclick="window.location.href='{{ .update_article_url }}'" {{ end }}>编辑文章</button>
+          </div>
+          <div class="article-author-info">
+            <div class="article-author">{{ .article_username }}</div>
+            <div class="article-publish-time">{{ formatTs .article_publish_time "2006-01-02 15:04" }}</div>
+          </div>
+          <div class="article-content">
+            {{ safe .article_content }}
+          </div>
+        </div>
+        <div class="sidebar">
+          <p>作者简介</p>
+        </div>
+      </main>
+      {{ "<!-- footer -->" | safe }}
+      <footer class="footer">
+        {{- template "footer" . -}}
+      </footer>
+  </body>
+</html>
+{{ end }}

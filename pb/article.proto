@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+option go_package = "./genproto/article;article";
+
+package article;
+
+service ArticleService {
+    // 发表文章。
+    rpc Publish(PublishRequest) returns (PublishResponse) {}
+    // 更新文章。
+    rpc Update(UpdateRequest) returns (Empty) {}
+    // 删除文章。
+    rpc Delete(DeleteRequest) returns (Empty) {}
+    // 获取单个文章内容。
+    rpc Get(GetRequest) returns (GetResponse) {}
+    // 获取单个用户的多个文章。
+    rpc GetByUser(GetByUserRequest) returns (GetByUserResponse) {}
+    // 获取指定文章id列表的多个文章。
+    rpc GetByIds(GetByIdsRequest) returns (GetByIdsResponse) {}
+}
+
+message PublishRequest {
+    int64 userId = 1;
+    string title = 2;
+    string tags = 3;
+    string summary = 4;
+    string content = 5;
+}
+
+message PublishResponse {
+    int64 id = 1;
+}
+
+message UpdateRequest {
+    int64 id = 1;
+    string title = 2;
+    string tags = 3;
+    string summary = 4;
+    string content = 5;
+}
+
+message DeleteRequest {
+    int64 id = 1;
+}
+
+message GetRequest {
+    int64 id = 1;
+}
+
+message GetResponse {
+    int64 id = 1;
+    int64 userId = 2;
+    string title = 3;
+    string tags = 4;
+    string summary = 5;
+    string content = 6;
+    int64 publishTime = 7;
+    string nickname = 8;
+}
+
+message GetByUserRequest {
+    int64 userId = 1;
+    string userName = 2;
+    int32 page = 3;
+    int32 pageSize = 4;
+}
+
+message GetByUserResponse {
+    repeated UserArticle articles = 1;
+    int32 count = 2;
+}
+
+message GetByIdsRequest {
+    repeated int64 ids = 1;
+}
+
+message GetByIdsResponse {
+    repeated UserArticle articles = 1;
+}
+
+message UserArticle {
+    int64 id = 1;
+    int64 userId = 2;
+    string title = 3;
+    string tags = 4;
+    string summary = 5;
+    string userName = 6;
+    int64 publishTime = 7;
+    string nickname = 8;
+}
+
+message Empty {}

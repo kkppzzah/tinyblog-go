@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option go_package = "./genproto/user;user";
+
+package user;
+
+service UserService {
+    // 创建用户。
+    rpc Create(CreateRequest) returns (CreateResponse) {}
+    // 获取用户信息。
+    rpc Get(GetRequest) returns (GetResponse) {}
+    // 更新用户。
+    rpc Update(UpdateRequest) returns (UpdateResponse) {}
+    // 删除用户。
+    rpc Delete(DeleteRequest) returns (Empty) {}
+}
+
+message CreateRequest {
+    string name = 1;
+    string password = 2;
+}
+
+message CreateResponse {
+    int64 id = 1;
+}
+
+message GetRequest {
+    int64 id = 1;
+}
+
+message GetResponse {
+    int64 id = 1;
+    string name = 2;
+    string nickname = 3;
+    string avatar = 4;
+    string bio = 5;
+}
+
+message UpdateRequest {
+    int64 id = 1;
+    string name = 2;
+    string nickname = 3;
+    string avatar = 4;
+    string bio = 5;
+}
+
+message UpdateResponse {
+    string name = 1;
+    string nickname = 2;
+    string avatar = 3;
+    string bio = 4;
+}
+
+message DeleteRequest {
+    int64 id = 1;
+}
+
+message Empty {}

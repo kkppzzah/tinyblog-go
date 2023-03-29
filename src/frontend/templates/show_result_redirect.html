@@ -1,0 +1,46 @@
+{{ define "show_result_redirect" }}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{{ .title }}</title>
+    <style>
+       body {
+         display: flex;
+         justify-content: center;
+         align-items: flex-start;
+         height: 100vh;
+         background-color: #f7f7f8;
+       }
+       .result-title {
+         font-size: 2rem;
+         font-weight: bold
+       }
+       .action-prompt {
+         font-size: 1em;
+         font-weight: bold;
+         margin-top: 10px;
+       }
+       .content-wrapper {
+         margin-top: 120px;
+       }
+       .redirect-url {
+        margin-left: 40px;
+       }
+    </style>
+  </head>
+  <body>
+      <div class="content-wrapper">
+        <div class="result-title">{{ .result_title }}</div>
+        <div class="result-detail">{{ .result_detail }} {{- if .redirect_url }} <a class="redirect-url" href='{{ .redirect_url }}'>点击此处</a> {{- end }}</div>
+      </div>
+      {{- if .redirect_url }}
+      <script>
+        window.location.href = '{{ .redirect_url }}';
+      </script>
+      {{- end}}
+  </body>
+</html>
+{{ end }}

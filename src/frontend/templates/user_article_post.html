@@ -1,0 +1,155 @@
+{{- define "user_article_post" }}
+<!DOCTYPE html>
+<html>
+  <head>
+    {{- template "head" . }}
+    <link href="/static/css/user_article_post.css" rel="stylesheet" />
+    <script type="text/javascript" src='/static/lib/tinymce/tinymce.min.js' referrerpolicy="origin"></script>
+    <script src="/static/lib/prism/prism-okidia.js"></script>
+    <link href="/static/lib/prism/prism-okidia.css" rel="stylesheet" />
+    <script src="/static/lib/jquery.min.js"></script>
+    <script>
+      var useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      tinymce.init({
+        selector: 'textarea#mytextarea',
+        language: 'zh-Hans',
+        // plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+        plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+        imagetools_cors_hosts: ['picsum.photos'],
+        menubar: 'file edit view insert format tools table help',
+        toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+        toolbar_sticky: true,
+        autosave_ask_before_unload: true,
+        autosave_interval: '30s',
+        autosave_prefix: '{path}{query}-{id}-',
+        autosave_restore_when_empty: false,
+        autosave_retention: '2m',
+        image_advtab: true,
+        link_list: [
+          { title: 'My page 1', value: 'https://www.tiny.cloud' },
+          { title: 'My page 2', value: 'http://www.moxiecode.com' }
+        ],
+        image_list: [
+          { title: 'My page 1', value: 'https://www.tiny.cloud' },
+          { title: 'My page 2', value: 'http://www.moxiecode.com' }
+        ],
+        image_class_list: [
+          { title: 'None', value: '' },
+          { title: 'Some class', value: 'class-name' }
+        ],
+        importcss_append: true,
+        file_picker_callback: function (callback, value, meta) {
+          /* Provide file and text for the link dialog */
+          if (meta.filetype === 'file') {
+            callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+          }
+
+          /* Provide image and alt text for the image dialog */
+          if (meta.filetype === 'image') {
+            callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+          }
+
+          /* Provide alternative source and posted for the media dialog */
+          if (meta.filetype === 'media') {
+            callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+          }
+        },
+        templates: [
+          { title: 'New Table', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+          { title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...' },
+          { title: 'New list with dates', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+        ],
+        template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
+        template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
+        height: 600,
+        image_caption: true,
+        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+        noneditable_noneditable_class: 'mceNonEditable',
+        toolbar_mode: 'sliding',
+        contextmenu: 'link image imagetools table',
+        skin: useDarkMode ? 'oxide-dark' : 'oxide',
+        content_css: [useDarkMode ? 'dark' : 'default', '/static/lib/prism/prism-okidia.css', ''],
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+        images_upload_url: '/v1/upload'
+      });
+
+      function showToast(id, title, toastBody) {
+        let els = $('#' + id);
+        if (els.length == 0) {
+          el = $('#myToast-template').clone();
+          el.attr('id', id);
+          el.find('.toast-header-title').text(title); 
+          el.find('.toast-body').text(toastBody); 
+          $('body').append(el);
+        } else {
+          el = els;
+        }
+        new bootstrap.Toast(el).show();
+      }
+
+      $(document).ready(function() {
+        $(".publish-article-button").click(function(event) {
+          let title = $('#titleInput').val();
+          let summary = $('#summaryInput').val();
+          if (title == '' || summary == '') {
+            return
+          }
+          event.preventDefault();
+          let articleContent = tinymce.activeEditor.getContent();
+          if (articleContent == null || articleContent == "") {
+            showToast('myToast-content', '发布失败', '文章内容不能为空！');
+            tinymce.activeEditor.focus();
+            return
+          }
+          $("#contentInput").val(articleContent);
+          $('.meta').submit();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="toast position-relative top-0 start-50 translate-middle-x" id="myToast-template" style="z-index: 20;position: absolute !important;">
+      <div class="toast-header bg-warning">
+          <strong class="toast-header-title"><i class="bi-gift-fill"></i></strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+          
+      </div>
+    </div>
+    {{ "<!-- header -->" | safe }}
+    <div class="header-container">
+      <header class="header container">
+        {{- template "header" . -}}
+      </header>
+    </div>
+      {{ "<!-- main -->" | safe }}
+      <main class="main">
+        <div class="editor">
+          <textarea id="mytextarea" >Hello, World!</textarea>
+        </div>
+        <div class="sidebar">
+          <form method="POST" class="meta">
+            <div class="form-floating mb-4 input-row">
+              <input type="text" name="title" placeholder="文章标题" id="titleInput" class="form-control input-small" required>
+              <label for="titleInput" class="input-label">文章标题</label>
+            </div>
+            <div class="form-floating mb-4 input-row">
+              <textarea type="textarea" class="form-control summary" name="summary" placeholder="文章概要" id="summaryInput" rows="6" required></textarea>
+              <label for="summaryInput" class="input-label">文章概要</label>
+            </div>
+            <div class="error-prompt text-danger input-row" hidden>{{ $.errorPrompt }}</div>
+            <textarea type="text" hidden name="content" id="contentInput"></textarea>
+            <div class="actions d-flex justify-content-between align-items-center input-row">
+              <button class="btn btn-outline-success rounded-pill button-small publish-article-button" type="submit">发布文章</button>
+            </div>
+          </form>
+        </div>
+      </main>
+      {{ "<!-- footer -->" | safe }}
+      <footer class="footer">
+        {{- template "footer" . -}}
+      </footer>
+  </body>
+</html>
+{{- end }}

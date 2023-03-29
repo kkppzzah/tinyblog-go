@@ -1,0 +1,44 @@
+{{- define "my_article_list" }}
+<!DOCTYPE html>
+<html>
+  <head>
+    {{- template "head" . }}
+    <link href="/static/css/my_article_list.css" rel="stylesheet" />
+  </head>
+  <body>
+    {{ "<!-- header -->" | safe }}
+    <div class="header-container">
+      <header class="header container">
+        {{- template "header" . -}}
+      </header>
+    </div>
+      {{ "<!-- main -->" | safe }}
+      <main class="main">
+          <list class="articles">
+            {{- range $article := .articles}}
+            <div class="article-item">
+              <div>
+                <div class="article-title"><a class="article-title-url" href="/article/{{ $article.Id}}"> {{ $article.Title }}</a></div>
+                <div class="article-info">
+                  <span class="article-publish-time">{{ formatTs $article.PublishTime "2006-01-02 15:04" }}</span>
+                  <div class="article-item-actions">
+                    <button class="article-item-action btn btn-outline-success btn-sm rounded-pill" onclick="window.location.href='/article/{{ $article.Id}}/edit'">编辑</button>
+                    <button class="article-item-action btn btn-outline-success btn-sm rounded-pill">删除</button>
+                  </div>
+                </div>
+                <div class="article-summary">{{ $article.Summary }}</div>
+              </div>
+            </div>
+            {{- end }}
+          </list>
+        <div class="sidebar">
+          <p>统计信息等</p>
+        </div>
+      </main>
+      {{ "<!-- footer -->" | safe }}
+      <footer class="footer">
+        {{- template "footer" . -}}
+      </footer>
+  </body>
+</html>
+{{- end }}

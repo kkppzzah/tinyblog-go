@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option go_package = "./genproto/recommend;recommend";
+
+package recommend;
+
+service RecommendService {
+    // 为网站首页进行推荐。
+    rpc RecommendForHome(RecommendForHomeRequest) returns (RecommendForHomeResponse) {}
+    // 为单个文章进行推荐。
+    rpc RecommendForArticle(RecommendForArticleRequest) returns (RecommendForArticleResponse) {}
+}
+
+message RecommendForHomeRequest {
+    int64 userId = 1;
+}
+
+message RecommendForHomeResponse {
+    repeated int64 articleIds = 1;
+}
+
+message RecommendForArticleRequest {
+    int64 articleId = 1;
+    int64 userId = 2;
+}
+
+message RecommendForArticleResponse {
+    repeated int64 articleIds = 1;
+}
