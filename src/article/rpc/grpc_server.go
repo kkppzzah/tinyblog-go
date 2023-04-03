@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"ppzzl.com/tinyblog-go/article/common"
 	pb "ppzzl.com/tinyblog-go/article/genproto/article"
+	pbhealth "ppzzl.com/tinyblog-go/article/genproto/grpc/health/v1"
 	"ppzzl.com/tinyblog-go/article/interfaces"
 )
 
@@ -40,4 +41,5 @@ func (s *Server) Run() {
 
 func (s *Server) registerGRPCServcies() {
 	pb.RegisterArticleServiceServer(s.grpcServer, NewArticleService(s.context))
+	pbhealth.RegisterHealthServer(s.grpcServer, NewHealthService(s.context))
 }

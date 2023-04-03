@@ -7,6 +7,7 @@ import (
 
 	"google.golang.org/grpc"
 	"ppzzl.com/tinyblog-go/search/common"
+	healthpb "ppzzl.com/tinyblog-go/search/genproto/grpc/health/v1"
 	pb "ppzzl.com/tinyblog-go/search/genproto/search"
 	"ppzzl.com/tinyblog-go/search/interfaces"
 )
@@ -40,4 +41,5 @@ func (s *Server) Run() {
 
 func (s *Server) registerGRPCServcies() {
 	pb.RegisterSearchServiceServer(s.grpcServer, NewSearchService(s.ctx))
+	healthpb.RegisterHealthServer(s.grpcServer, NewHealthService(s.ctx))
 }

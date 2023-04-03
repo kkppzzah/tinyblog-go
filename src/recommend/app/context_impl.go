@@ -25,7 +25,7 @@ type ContextImpl struct {
 func NewContextImpl() *ContextImpl {
 	ctx := &ContextImpl{}
 	// 创建各个服务。
-	recommendDB, err := gorm.Open(mysql.Open(common.MustGetEnv(common.EnvRecommendDBConnStr, "")), &gorm.Config{})
+	recommendDB, err := gorm.Open(mysql.Open(common.MustLoadSecretAsString(common.EnvRecommendDBConnStr, common.EnvRecommendDBConnStrSecretFile)), &gorm.Config{})
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect database (recommend), %v", err))
 	}

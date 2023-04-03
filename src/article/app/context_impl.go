@@ -27,7 +27,7 @@ type ContextImpl struct {
 func NewContextImpl() *ContextImpl {
 	ctx := &ContextImpl{}
 	// 创建各个基础组件。
-	articleDB, err := gorm.Open(mysql.Open(common.MustGetEnv(common.EnvArticleDBConnStr, "")), &gorm.Config{})
+	articleDB, err := gorm.Open(mysql.Open(common.MustLoadSecretAsString(common.EnvArticleDBConnStr, common.EnvArticleDBConnStrSecretFile)), &gorm.Config{})
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect database (article), %v", err))
 	}

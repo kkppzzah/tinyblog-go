@@ -10,7 +10,6 @@ endif
 init:
 	@go get -u google.golang.org/protobuf/proto
 	@go install github.com/golang/protobuf/protoc-gen-go@latest
-	@go install github.com/go-micro/generator/cmd/protoc-gen-micro@latest
 
 .PHONY: proto
 proto:
@@ -50,4 +49,4 @@ gencss:
 
 .PHONY: docker
 docker:
-	@docker build -t frontend:latest .
+	@docker build -t tinyblog-go.frontend .

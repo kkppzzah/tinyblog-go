@@ -30,7 +30,7 @@ func NewAuthService(context interfaces.Context) *AuthService {
 	rs := &AuthService{
 		userRepository:     context.GetUserRepository(),
 		sessionRepository:  context.GetSessionRepository(),
-		jwtSecret:          []byte(common.MustGetEnv(common.EnvJWTSecret, "")),
+		jwtSecret:          []byte(common.MustLoadSecretAsString(common.EnvJWTSecret, common.EnvJWTSecretSecretFile)),
 		userEventPublisher: context.GetUserEventPublisher(),
 	}
 	return rs

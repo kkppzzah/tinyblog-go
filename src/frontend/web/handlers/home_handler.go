@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	pbarticle "ppzzl.com/tinyblog-go/frontend/genproto/article"
 	"ppzzl.com/tinyblog-go/frontend/interfaces"
 	"ppzzl.com/tinyblog-go/frontend/service"
 )
@@ -36,10 +37,14 @@ func (h *HomeHandler) Get(c *fiber.Ctx) error {
 	log.Printf("articleIds: %v, %v", recommendArticleIds, err)
 	// 获取推荐文章列表。
 	rsp, err := h.articleService.GetByIds(c.UserContext(), recommendArticleIds)
+	var articles []*pbarticle.UserArticle
+	if rsp != nil {
+		articles = rsp.Articles
+	}
 	// 渲染页面。
 	return c.Render("home", fiber.Map{
 		"title":              "首页",
-		"recommend_articles": rsp.Articles,
+		"recommend_articles": articles,
 		"user_info":          userInfo,
 	})
 }

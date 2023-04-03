@@ -6,8 +6,12 @@ const (
 	EnvVarNameListenAddress = "LISTEN_ADDRESS"
 	// EnvJWTSecret 用于JWT。
 	EnvJWTSecret = "JWT_SECRET"
+	// EnvJWTSecretSecretFile 用于JWT（文件中读取）。
+	EnvJWTSecretSecretFile = "JWT_SECRET_SECRET_FILE"
 	// EnvUserDBConnStr 用来连接用户数据库的地址。
 	EnvUserDBConnStr = "USER_DB_CONN_STR"
+	// EnvUserDBConnStrSecretFile 用来连接用户数据库的地址（文件中读取）。
+	EnvUserDBConnStrSecretFile = "USER_DB_CONN_STR_SECRET_FILE"
 	// EnvRedisConnStr 用来连接Redis的地址。
 	EnvRedisConnStr = "REDIS_CONN_STR"
 	// EnvKafkaBrokers Kafka brokers 逗号分隔。

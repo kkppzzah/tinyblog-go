@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+spec:
+  selector:
+    matchLabels:
+      app: elasticsearch
+  serviceName: "elasticsearch"
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: elasticsearch
+        image: elasticsearch:8.4.1
+        ports:
+        - containerPort: 9200
+          name: search
+        volumeMounts:
+        - name: search
+          mountPath: /usr/share/elasticsearch/data
+        env:
+        - name: ES_JAVA_OPTS
+          value: "-Xms512m -Xmx512m"
+        - name: discovery.type
+          value: "single-node"
+        - name: xpack.security.enabled
+          value: "false"
+  volumeClaimTemplates:
+  - metadata:
+      name: search
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-storage"
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  labels:
+    app: elasticsearch
+spec:
+  ports:
+  - port: 9200
+    name: search
+  clusterIP: None
+  selector:
+    app: elasticsearch

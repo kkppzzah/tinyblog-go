@@ -31,7 +31,7 @@ func NewContextImpl() *ContextImpl {
 	ctx.redisClient = redis.NewClient(&redis.Options{
 		Addr: common.MustGetEnv(common.EnvRedisConnStr, ""),
 	})
-	userDB, err := gorm.Open(mysql.Open(common.MustGetEnv(common.EnvUserDBConnStr, "")), &gorm.Config{})
+	userDB, err := gorm.Open(mysql.Open(common.MustLoadSecretAsString(common.EnvUserDBConnStr, common.EnvUserDBConnStrSecretFile)), &gorm.Config{})
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect database (user), %v", err))
 	}

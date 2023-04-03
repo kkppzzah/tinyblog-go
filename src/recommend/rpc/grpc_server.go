@@ -7,6 +7,7 @@ import (
 
 	"google.golang.org/grpc"
 	"ppzzl.com/tinyblog-go/recommend/common"
+	pbhealth "ppzzl.com/tinyblog-go/recommend/genproto/grpc/health/v1"
 	pb "ppzzl.com/tinyblog-go/recommend/genproto/recommend"
 	"ppzzl.com/tinyblog-go/recommend/interfaces"
 )
@@ -40,4 +41,5 @@ func (s *Server) Run() {
 
 func (s *Server) registerGRPCServcies() {
 	pb.RegisterRecommendServiceServer(s.grpcServer, NewRecommendService(s.ctx))
+	pbhealth.RegisterHealthServer(s.grpcServer, NewHealthService(s.ctx))
 }

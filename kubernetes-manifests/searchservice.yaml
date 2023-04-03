@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: searchservice-deployment
+spec:
+  selector:
+    matchLabels:
+      app: searchservice
+  template:
+    metadata:
+      labels:
+        app: searchservice
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+      - name: server
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: tinyblog-go.search
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8084
+        readinessProbe:
+          periodSeconds: 5
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:8084"]
+        livenessProbe:
+          periodSeconds: 5
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:8084"]
+        env:
+        - name: LISTEN_ADDRESS
+          value: "0.0.0.0:8084"
+        - name: RECOMMEND_SERVICE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: recommend_service_address
+        - name: ARTICLE_SERVICE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: article_service_address
+        - name: AUTH_SERVICE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: user_service_address
+        - name: USER_SERVICE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: user_service_address
+        - name: SEARCH_SERVICE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: search_service_address
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: kafka_address
+        - name: ES_CLUSTER_ADDRESSES
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: elasticsearch_address
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: searchservice
+spec:
+  type: ClusterIP
+  selector:
+    app: searchservice
+  ports:
+  - name: grpc
+    port: 8084
+    targetPort: 8084
+    

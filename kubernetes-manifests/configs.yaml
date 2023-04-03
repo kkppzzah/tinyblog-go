@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tb-configs
+data:
+  recommend_service_address: "recommendservice:8081"
+  article_service_address: "articleservice:8082"
+  user_service_address: "userservice:8083"
+  search_service_address: "searchservice:8084"
+  elasticsearch_address: "http://elasticsearch:9200"
+  kafka_address: "kafka:9092"
+  mysql_address: "mysql:3306"
+  zookeeper_address: "zookeeper:2181"
+  redis_address: "redis:6379"
+  mysql_user_db_user: "user"
+  mysql_article_db_user: "article"
+  mysql_recommend_db_user: "recommend"

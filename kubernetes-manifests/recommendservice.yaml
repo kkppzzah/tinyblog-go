@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendservice-deployment
+spec:
+  selector:
+    matchLabels:
+      app: recommendservice
+  template:
+    metadata:
+      labels:
+        app: recommendservice
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+      - name: server
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: tinyblog-go.recommend
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8081
+        readinessProbe:
+          periodSeconds: 5
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:8081"]
+        livenessProbe:
+          periodSeconds: 5
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:8081"]
+        volumeMounts:
+        - name: secrets
+          mountPath: /etc/secrets
+          readOnly: true
+        env:
+        - name: LISTEN_ADDRESS
+          value: "0.0.0.0:8081"
+        - name: RECOMMEND_DB_CONN_STR_SECRET_FILE
+          value: "/etc/secrets/mysql_recommend_db_conn_str"
+        - name: KAFKA_BROKERS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: kafka_address
+        - name: RECOMMEND_SERVICE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: recommend_service_address
+        - name: ARTICLE_SERVICE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: article_service_address
+        - name: AUTH_SERVICE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: user_service_address
+        - name: USER_SERVICE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: user_service_address
+        - name: SEARCH_SERVICE_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: tb-configs
+              key: search_service_address
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+      volumes:
+      - name: secrets
+        secret:
+          secretName: tb-recommend-service-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommendservice
+spec:
+  type: ClusterIP
+  selector:
+    app: recommendservice
+  ports:
+  - name: grpc
+    port: 8081
+    targetPort: 8081
+    

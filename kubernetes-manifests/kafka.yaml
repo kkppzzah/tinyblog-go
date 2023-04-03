@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kafka
+spec:
+  selector:
+    matchLabels:
+      app: kafka
+  serviceName: "kafka"
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: kafka
+        image: bitnami/kafka
+        ports:
+        - containerPort: 9092
+          name: client
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/kafka
+        env:
+        - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+          value: "zookeeper:2181"
+        - name: ALLOW_PLAINTEXT_LISTENER
+          value: "yes"
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-storage"
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+  labels:
+    app: kafka
+spec:
+  ports:
+  - port: 9092
+    name: client
+  clusterIP: None
+  selector:
+    app: kafka

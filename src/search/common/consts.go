@@ -9,7 +9,7 @@ const (
 	// EnvEsClusterAddresses Elasticsearch集群地址列表。
 	EnvEsClusterAddresses = "ES_CLUSTER_ADDRESSES"
 	// EnvArticleServiceAddress 文章服务名。
-	EnvArticleServiceAddress = "ARTICLE_ADDRESS"
+	EnvArticleServiceAddress = "ARTICLE_SERVICE_ADDRESS"
 	// ErrorCodeNoFound 未找到相关的数据。
 	ErrorCodeNoFound = 101
 	// ErrorCodeDBOpError 执行数据库操作错误。

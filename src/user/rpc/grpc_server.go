@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"ppzzl.com/tinyblog-go/user/common"
 	pbauth "ppzzl.com/tinyblog-go/user/genproto/auth"
+	pbhealth "ppzzl.com/tinyblog-go/user/genproto/grpc/health/v1"
 	pbuser "ppzzl.com/tinyblog-go/user/genproto/user"
 	"ppzzl.com/tinyblog-go/user/interfaces"
 )
@@ -42,4 +43,5 @@ func (s *Server) Run() {
 func (s *Server) registerGRPCServcies() {
 	pbuser.RegisterUserServiceServer(s.grpcServer, NewUserService(s.context))
 	pbauth.RegisterAuthServiceServer(s.grpcServer, NewAuthService(s.context))
+	pbhealth.RegisterHealthServer(s.grpcServer, NewHealthService(s.context))
 }

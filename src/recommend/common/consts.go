@@ -4,8 +4,10 @@ package common
 const (
 	// EnvVarNameListenAddress 监听地址环境变量名。
 	EnvVarNameListenAddress = "LISTEN_ADDRESS"
-	// EnvRecommendDBConnStr 用来连接文章数据库的地址。
-	EnvRecommendDBConnStr = "ARTICLE_DB_CONN_STR"
+	// EnvRecommendDBConnStr 用来连接推荐数据库的地址。
+	EnvRecommendDBConnStr = "RECOMMEND_DB_CONN_STR"
+	// EnvRecommendDBConnStrSecretFile 用来连接推荐数据库的地址（文件中读取）。
+	EnvRecommendDBConnStrSecretFile = "RECOMMEND_DB_CONN_STR_SECRET_FILE"
 	// EnvKafkaBrokers Kafka brokers 逗号分隔。
 	EnvKafkaBrokers = "KAFKA_BROKERS"
 	// ErrorCodeNoFound 未找到相关的数据。

@@ -10,7 +10,6 @@ endif
 init:
 	@go get -u google.golang.org/protobuf/proto
 	@go install github.com/golang/protobuf/protoc-gen-go@latest
-	@go install github.com/go-micro/generator/cmd/protoc-gen-micro@latest
 
 .PHONY: proto
 proto:
@@ -19,6 +18,7 @@ proto:
 	@protoc --proto_path=$(PROTODIR) --go_out=. --go-grpc_out=require_unimplemented_servers=false:./ $(PROTODIR)/recommend.proto
 	@protoc --proto_path=$(PROTODIR) --go_out=. --go-grpc_out=require_unimplemented_servers=false:./ $(PROTODIR)/storage.proto
 	@protoc --proto_path=$(PROTODIR) --go_out=. --go-grpc_out=require_unimplemented_servers=false:./ $(PROTODIR)/search.proto
+	@protoc --proto_path=$(PROTODIR) --go_out=. --go-grpc_out=require_unimplemented_servers=false:./ $(PROTODIR)/health.proto
 
 .PHONY: update
 update:
@@ -30,7 +30,7 @@ tidy:
 
 .PHONY: build
 build:
-	@go build -o recommend$(EXE_SUFFIX) *.go
+	@go build -o search$(EXE_SUFFIX) *.go
 
 .PHONY: test
 test:
@@ -38,4 +38,4 @@ test:
 
 .PHONY: docker
 docker:
-	@docker build -t recommend:latest .
+	@docker build -t tinyblog-go.search:latest .

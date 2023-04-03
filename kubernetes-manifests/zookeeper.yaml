@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+spec:
+  selector:
+    matchLabels:
+      app: zookeeper
+  serviceName: "zookeeper"
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: zookeeper
+        image: zookeeper:3.8
+        ports:
+        - containerPort: 2181
+          name: client
+        - containerPort: 2888
+          name: follower
+        - containerPort: 3888
+          name: election
+        - containerPort: 8080
+          name: admin
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: datalog
+          mountPath: /datalog
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-storage"
+      resources:
+        requests:
+          storage: 1Gi
+  - metadata:
+      name: datalog
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-storage"
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  labels:
+    app: zookeeper
+spec:
+  ports:
+  - port: 2181
+    name: client
+  - port: 2888
+    name: follower
+  - port: 3888
+    name: election
+  - port: 8080
+    name: admin
+  clusterIP: None
+  selector:
+    app: zookeeper
