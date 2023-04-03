@@ -2,7 +2,7 @@
 
 ## 介绍
 
-这不是一个严肃的项目，功能不完善，更不可能应用于生产环境。这只是个人的学习、思考，这是一片试验田。
+这不是一个严肃的项目，功能不完善，更不可能应用于生产环境。这只是为了学习、思考，这是一片试验田。
 
 **严重参考了 [microservices-demo](https://github.com/GoogleCloudPlatform/microservices-demo)。**
 
@@ -62,6 +62,29 @@
 - [Prism](https://prismjs.com)，用来高亮显示文章中的代码片段。
 - [Bootstrap](https://getbootstrap.com)，前端页面部分用到。
 - [jQuery](https://jquery.com)，前端页面用到了一点。
+
+## Kubernetes部署
+
+仅尝试了在PC上Kubernetes docker-desktop这一种方式，逐个组件部署，各组件配置文件如下：
+
+| 配置                                              | 说明                                                                                                                       |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| [PersistentVolume](./kubernetes-manifests/pv.yaml)             | 配置各个PersistentVolume。|
+| [StorageClass](./kubernetes-manifests/sc.yaml)                 | 配置StorageClass。|
+| [ConfigMap](./kubernetes-manifests/configs.yaml)               | 配置ConfigMap。|
+| [Secret](./kubernetes-manifests/secrets.yaml)                  | 配置各个Secret。|
+| [Zookeeper](./kubernetes-manifests/zookeeper.yaml)             | Zookeeper配置。配置为StatefulSet。|
+| [Kafka](./kubernetes-manifests/kafka.yaml)                     | Kafka配置。配置为StatefulSet。|
+| [Redis](./kubernetes-manifests/redis.yaml)                     | Redis配置。配置为StatefulSet。|
+| [Elasticsearch](./kubernetes-manifests/elasticsearch.yaml)     | Elasticsearch配置。配置为StatefulSet。|
+| [MySQL](./kubernetes-manifests/mysql.yaml)                     | MySQL配置。配置为StatefulSet。|
+| [frontend](./kubernetes-manifests/frontend.yaml)               | frontend服务。配置为Deployment。|
+| [user](./kubernetes-manifests/user.yaml)                       | user/auth服务。配置为Deployment。|
+| [article](./kubernetes-manifests/article.yaml)                 | article服务。配置为Deployment。|
+| [recommend](./kubernetes-manifests/recommend.yaml)             | recommend服务。配置为Deployment。|
+| [search](./kubernetes-manifests/search.yaml)                   | search服务。配置为Deployment。|
+
+其中，出于学习的考虑，第三方库如：MySQL、Redis等，是参照官方docker image的文档及Kubernetes文档配置的，并不讲究。
 
 ## 问题
 
